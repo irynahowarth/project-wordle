@@ -3,6 +3,7 @@ import React from "react";
 import { sample, range } from "../../utils";
 import { NUM_OF_GUESSES_ALLOWED } from "../../constants";
 import { WORDS } from "../../data";
+import { checkGuess } from "../../game-helpers";
 import GuessInput from "../GuessInput/GuessInput";
 import GuessItem from "../GuessItem/GuessItem";
 import Guess from "../Guess/Guess";
@@ -25,6 +26,10 @@ function Game() {
       return newArr;
     });
   }
+
+  function guessChecker(word) {
+    return checkGuess(word, answer);
+  }
   return (
     <>
       <div className="guess-results">
@@ -33,6 +38,7 @@ function Game() {
             value={guessList[el]?.name}
             id={guessList[el]?.id}
             key={guessList[el]?.id || Math.random()}
+            guessCheck={guessChecker}
           />
         ))}
       </div>
