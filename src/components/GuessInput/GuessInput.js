@@ -5,7 +5,9 @@ function GuessInput({ addGuessItem, guessList }) {
 
   function formHandler(e) {
     e.preventDefault();
-    console.log({ guess: guess });
+    if (guess === "") {
+      return;
+    }
     addGuessItem(guess);
     setGuess("");
   }
@@ -18,7 +20,7 @@ function GuessInput({ addGuessItem, guessList }) {
           id="guess-input"
           type="text"
           value={guess}
-          pattern="\w{5,5}"
+          pattern="[a-zA-Z]{5,5}"
           onChange={(e) => setGuess(e.target.value.toUpperCase())}
         />
       </form>
