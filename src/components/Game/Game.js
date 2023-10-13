@@ -16,6 +16,10 @@ console.info({ answer });
 
 function Game() {
   const [guessList, setGuessList] = React.useState([]);
+  const [gameStatus, setGameStatus] = React.useState({
+    gameOn: true,
+    status: null,
+  });
   const listItems = guessList.map(({ name, id }) => (
     <GuessItem name={name} key={id} />
   ));
@@ -30,6 +34,19 @@ function Game() {
   function guessChecker(word) {
     return checkGuess(word, answer);
   }
+
+  function gameStatusChecker(word) {
+    if (guessList.length < NUM_OF_GUESSES_ALLOWED - 1 && word !== answer) {
+      return;
+    }
+    if (word === answer) {
+      setGameStatus("won");
+      return "won";
+    }
+    setGameStatus("lost");
+    return "lost";
+  }
+
   return (
     <>
       <div className="guess-results">
@@ -42,7 +59,32 @@ function Game() {
           />
         ))}
       </div>
-      <GuessInput addGuessItem={addToGuessList} guessList={guessList} />
+      <GuessInput
+        addGuessItem={addToGuessList}
+        guessList={guessList}
+        gameCheck={gameStatusChecker}
+      />
+      <div
+        className="happy banner"
+        style={{
+          display: gameStatus === "won" ? "block" : "none",
+        }}
+      >
+        <p>
+          <strong>Congratulations!</strong> Got it in
+          <strong> {guessList.length} guesses</strong>.
+        </p>
+      </div>
+      <div
+        className="sad banner"
+        style={{
+          display: gameStatus === "lost" ? "block" : "none",
+        }}
+      >
+        <p>
+          Sorry, the correct answer is <strong>{answer}</strong>.
+        </p>
+      </div>
     </>
   );
 }

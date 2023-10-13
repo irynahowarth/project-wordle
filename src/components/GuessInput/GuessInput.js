@@ -1,7 +1,8 @@
 import React from "react";
 
-function GuessInput({ addGuessItem, guessList }) {
+function GuessInput({ addGuessItem, guessList, gameCheck }) {
   const [guess, setGuess] = React.useState("");
+  const [isDisabled, setIsDisabled] = React.useState(false);
 
   function formHandler(e) {
     e.preventDefault();
@@ -9,6 +10,8 @@ function GuessInput({ addGuessItem, guessList }) {
       return;
     }
     addGuessItem(guess);
+    const game = gameCheck(guess);
+    game && setIsDisabled(true);
     setGuess("");
   }
 
@@ -22,6 +25,7 @@ function GuessInput({ addGuessItem, guessList }) {
           value={guess}
           pattern="[a-zA-Z]{5,5}"
           onChange={(e) => setGuess(e.target.value.toUpperCase())}
+          disabled={isDisabled}
         />
       </form>
     </>
